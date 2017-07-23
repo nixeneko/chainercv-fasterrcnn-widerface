@@ -30,6 +30,7 @@ WIDER_TRAIN_DIR = "WIDER_train"
 WIDER_TRAIN_ANNOTATION_MAT = "wider_face_split/wider_face_train.mat"
 WIDER_VAL_DIR = 'WIDER_val'
 WIDER_VAL_ANNOTATION_MAT = 'wider_face_split/wider_face_val.mat'
+
 BLACKLIST_FILE = 'blacklist.txt'
 
 faster_rcnn = FasterRCNNVGG16(n_fg_class=1,
@@ -62,13 +63,13 @@ def main():
     parser.add_argument('--step_size', '-ss', type=int, default=50000)
     parser.add_argument('--iteration', '-i', type=int, default=70000)
     parser.add_argument('--train_data_dir', '-t', default=WIDER_TRAIN_DIR,
-                        help='Train dataset (WIDER_train)')
+                        help='Training dataset (WIDER_train)')
     parser.add_argument('--train_annotation', '-ta', default=WIDER_TRAIN_ANNOTATION_MAT,
-                        help='Output directory')
+                        help='Annotation file (.mat) for training dataset')
     parser.add_argument('--val_data_dir', '-v', default=WIDER_VAL_DIR,
-                        help='Output directory')
+                        help='Validation dataset (WIDER_train)')
     parser.add_argument('--val_annotation', '-va', default=WIDER_VAL_ANNOTATION_MAT,
-                        help='Output directory')
+                        help='Annotation file (.mat) for validation dataset')
     args = parser.parse_args()
 
     np.random.seed(args.seed)
