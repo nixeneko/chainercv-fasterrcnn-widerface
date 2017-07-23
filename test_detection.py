@@ -39,6 +39,7 @@ for i in range(len(mat['event_list'])):
         file = mat['file_list'][i,0][j,0][0]
         filename = "{}.jpg".format(file)
         filepath = os.path.join(WIDER_VAL_DIR, 'images', event, filename)
+        print(filepath)
         
         # bounding boxes and labels of the picture file
         bboxs = mat['face_bbx_list'][i,0][j,0]
@@ -55,12 +56,12 @@ for i in range(len(mat['event_list'])):
         #print(np.where(invalid_labels==1))
         #if a.sum() > 0:
             #print(bboxs)
-        for k, bbox in enumerate(bboxs):
+        for k, bbox in enumerate(bboxs): # show gound truth
             #color = (0,0,255) if invalid_labels[k] else (0,255,0)
-            color = (255,255,0)
+            color = (0,255,0)
             pt1 = tuple(bbox[:2])
             pt2 = tuple(np.add(bbox[:2], bbox[2:]))
-            cv2.rectangle(img, pt1, pt2, color, 1)
+            cv2.rectangle(img, pt1, pt2, color, 2)
             
         imgpred = utils.read_image(filepath, color=True)
         bboxes, labels, scores = model.predict([imgpred])
@@ -69,17 +70,17 @@ for i in range(len(mat['event_list'])):
         for k in np.where(score>=0.7)[0]:
             #color = (0,0,255) if invalid_labels[k] else (0,255,0)
             bbx = bbox[k]
-            color = (0,int(255*(1-score[k])),255)
+            color = (255,int(255*2*(1-score[k])),0)
             pt1 = tuple(bbx[1::-1])
             pt2 = tuple(bbx[:1:-1])
-            cv2.rectangle(img, pt1, pt2, color, 1)
+            cv2.rectangle(img, pt1, pt2, color, 2)
         
         cv2.imshow('test', img)
-        print(img.shape)
+        #print(img.shape)
         key = cv2.waitKey()
         if key == 27: # press Esc to quit
             quit()
-        print('next_loop')
+        #print('next_loop')
 
 #import pdb; pdb.set_trace()
 
