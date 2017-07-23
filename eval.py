@@ -13,7 +13,13 @@ from chainercv.evaluations import eval_detection_voc_ap
 from chainercv.links import FasterRCNNVGG16
 from chainercv.utils import apply_prediction_to_iterator
 
+# original code is from: https://github.com/chainer/chainercv/tree/master/examples/detection
+
 from  wider_face_dataset import WIDERFACEDataset
+
+# validation dataset path
+WIDER_VAL_DIR = 'WIDER_val'
+WIDER_VAL_ANNOTATION_MAT = 'wider_face_split/wider_face_val.mat'
 
 class ProgressHook(object):
 
@@ -33,7 +39,7 @@ class ProgressHook(object):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pretrained_model', default='result/snapshot_model.npz')
+    parser.add_argument('--pretrained_model', default='trained_model/snapshot_model.npz')
     parser.add_argument('--gpu', type=int, default=-1)
     parser.add_argument('--batchsize', type=int, default=32)
     args = parser.parse_args()
@@ -50,7 +56,7 @@ def main():
 
     #dataset = VOCDetectionDataset(
     #    year='2007', split='test', use_difficult=True, return_difficult=True)
-    dataset = WIDERFACEDataset('WIDER_val', 'wider_face_split/wider_face_val.mat',
+    dataset = WIDERFACEDataset(WIDER_VAL_DIR, WIDER_VAL_ANNOTATION_MAT,
         use_difficult=True, return_difficult=True)
     iterator = iterators.SerialIterator(
         dataset, args.batchsize, repeat=False, shuffle=False)
