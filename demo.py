@@ -13,7 +13,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--gpu', type=int, default=-1)
-    parser.add_argument('--pretrained_model', default='result/snapshot_model.npz')
+    parser.add_argument('--pretrained_model', default='trained_model/snapshot_model.npz')
     parser.add_argument('image')
     args = parser.parse_args()
 
