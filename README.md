@@ -21,6 +21,7 @@ Library version:
 
 ### Demo
 If a path to pretorained model is not given, `tained_moded/snapshot_model.npz` is used.
+
     python demo.py [--gpu <gpu>] [--pretrained_model <model_path>] <image>.jpg
 
 ### Train code
