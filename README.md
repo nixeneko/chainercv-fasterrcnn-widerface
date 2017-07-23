@@ -11,7 +11,7 @@ Tested on Windows 10 (64 bit), Python 3.5.3 (installed by Anaconda)
 This code depends on:
 - Chainer (https://chainer.org/)
 - CuPy (https://cupy.chainer.org/)
-- ChainerCV (https://github.com/chainer/chainercv )
+- ChainerCV (https://github.com/chainer/chainercv)
 - SciPy (https://www.scipy.org/; for importing MATLAB .mat file)
 
 Library version: 
@@ -32,9 +32,11 @@ Download these files and extract:
 - Face annotations
 
 Execute with specifing dataset directories and annotation files (.mat) for training and validation sets, such as:
+
     python train.py --gpu=0 --train_data_dir="WIDER_train" --train_annotation="wider_face_split/wider_face_train.mat" --val_data_dir="WIDER_val" --val_annotation="wider_face_split/wider_face_val.mat"
 
 Or edit codes specifying dataset paths in `train.py` and execute:
+
     python train.py --gpu 0
 
 ### test_dataset.py
@@ -42,6 +44,7 @@ Show ground truth and predicted result on the images from validation dataset.
 Requires OpenCV Python bindings to execute.
 
 Edit `test_detection.py` about dataset paths and run:
+
     python test_detection.py --gpu 0
 
 - Green rectangles: ground truth.
