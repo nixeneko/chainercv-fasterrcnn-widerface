@@ -1,0 +1,10 @@
+
+__pycache__/
+result/
+wider_face_split/
+WIDER_test/
+WIDER_train/
+WIDER_val/
+*.jpg
+*.log
+donelist.txt
