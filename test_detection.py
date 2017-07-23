@@ -4,20 +4,20 @@ import os
 import numpy as np
 import scipy.io
 import cv2
-
-MATFILE = "wider_face_split/wider_face_train.mat"
-IMGDIR = "WIDER_train/images"
-
-mat = scipy.io.loadmat(MATFILE)
-
-#dict_keys(['pose_label_list', 'event_list', 'file_list', '__header__', '__version__', 'invalid_label_list', 'illumination_label_list', '__globals__', 'occlusion_label_list', 'face_bbx_list', 'blur_label_list', 'expression_label_list'])
-
-MODELFILE = 'result/snapshot_model.npz'
-
 import chainer
 from chainer import iterators
 from chainercv.links import FasterRCNNVGG16
 from chainercv import utils
+
+# dataset paths
+WIDER_VAL_DIR = 'WIDER_val'
+WIDER_VAL_ANNOTATION_MAT = 'wider_face_split/wider_face_val.mat'
+# trained model
+MODELFILE = 'result/snapshot_model.npz'
+
+mat = scipy.io.loadmat(WIDER_VAL_ANNOTATION_MAT)
+
+#dict_keys(['pose_label_list', 'event_list', 'file_list', '__header__', '__version__', 'invalid_label_list', 'illumination_label_list', '__globals__', 'occlusion_label_list', 'face_bbx_list', 'blur_label_list', 'expression_label_list'])
 
 model = FasterRCNNVGG16(
     n_fg_class=1,
@@ -31,7 +31,8 @@ for i in range(len(mat['event_list'])):
     for j in range(len(mat['file_list'][i,0])):
         file = mat['file_list'][i,0][j,0][0]
         filename = "{}.jpg".format(file)
-        filepath = os.path.join(IMGDIR, event, filename)
+        filepath = os.path.join(WIDER_VAL_DIR, 'images', event, filename)
+        
         # bounding boxes and labels of the picture file
         bboxs = mat['face_bbx_list'][i,0][j,0]
         invalid_labels = mat['invalid_label_list'][i,0][j,0].ravel()
@@ -40,10 +41,7 @@ for i in range(len(mat['event_list'])):
         occlusion_labels = mat['occlusion_label_list'][i,0][j,0].ravel()
         blur_labels = mat['blur_label_list'][i,0][j,0].ravel()
         expression_labels = mat['expression_label_list'][i,0][j,0].ravel()
-        
-        #if not '36_Football_Football_36_63' in filename:
-        #    continue
-            
+
         img = cv2.imread(filepath)
         a, = np.where(invalid_labels==1)
         #print(invalid_labels)
