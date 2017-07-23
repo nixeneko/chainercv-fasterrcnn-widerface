@@ -21,6 +21,7 @@ Library version:
 
 ### Demo
 If a path to pretorained model is not given, `tained_moded/snapshot_model.npz` is used.
+Since the pretrained model has large file size (484 MB), it is excluded from this repository. It will be downloaded automatically when  `demo.py` is executed.
 
     python demo.py [--gpu <gpu>] [--pretrained_model <model_path>] <image>.jpg
 
