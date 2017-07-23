@@ -8,3 +8,4 @@ WIDER_val/
 *.jpg
 *.log
 donelist.txt
+trained_model/snapshot_model.npz
