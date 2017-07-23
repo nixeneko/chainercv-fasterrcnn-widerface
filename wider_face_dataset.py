@@ -73,10 +73,7 @@ class WIDERFACEDataset(chainer.dataset.DatasetMixin):
         Returns:
             tuple of an image and bounding boxes
         """
-        #id_ = r'WIDER_train\images\36--Football\36_Football_Football_36_63.jpg' #for debugging
         id_ = self.ids[i]
-        # if r'36_Football_Football_36_63.jpg' in id_: #for debugging
-            # id_ = self.ids[i-1]
         bbox = self.bboxs[id_].astype(np.float32)
         label = self.labels[id_].astype(np.int32)
         difficult = self.difficult[id_].astype(np.bool)
@@ -84,30 +81,6 @@ class WIDERFACEDataset(chainer.dataset.DatasetMixin):
             bbox = bbox[np.where(difficult==False)]
             label = label[np.where(difficult==False)]
             difficult = difficult[np.where(difficult==False)]
-        # anno = ET.parse(
-            # os.path.join(self.data_dir, 'Annotations', id_ + '.xml'))
-        # bbox = []
-        # label = []
-        # difficult = []
-        # for obj in anno.findall('object'):
-            # when in not using difficult split, and the object is
-            # difficult, skipt it.
-            # if not self.use_difficult and int(obj.find('difficult').text) == 1:
-                # continue
-
-            # difficult.append(int(obj.find('difficult').text))
-            # bndbox_anno = obj.find('bndbox')
-            # subtract 1 to make pixel indexes 0-based
-            # bbox.append([
-                # int(bndbox_anno.find(tag).text) - 1
-                # for tag in ('ymin', 'xmin', 'ymax', 'xmax')])
-            # name = obj.find('name').text.lower().strip()
-            # label.append(voc_utils.voc_detection_label_names.index(name))
-        # bbox = np.stack(bbox).astype(np.float32)
-        # label = np.stack(label).astype(np.int32)
-        
-        # When `use_difficult==False`, all elements in `difficult` are False.
-        # difficult = np.array(difficult, dtype=np.bool)
 
         # Load a image
         img_file = id_
