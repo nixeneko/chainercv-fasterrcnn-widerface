@@ -8,6 +8,7 @@ import chainer
 from chainer import iterators
 from chainercv.links import FasterRCNNVGG16
 from chainercv import utils
+import argparse
 
 # dataset paths
 WIDER_VAL_DIR = 'WIDER_val'
@@ -23,8 +24,14 @@ model = FasterRCNNVGG16(
     n_fg_class=1,
     pretrained_model=MODELFILE)
 
-chainer.cuda.get_device(0).use()
-model.to_gpu()
+parser = argparse.ArgumentParser(
+        description='view detection test on validation dataset')
+parser.add_argument('--gpu', '-g', type=int, default=-1)
+args = parser.parse_args()
+
+if args.gpu >= 0:
+    chainer.cuda.get_device(args.gpu).use()
+    model.to_gpu(args.gpu)
 
 for i in range(len(mat['event_list'])):
     event = mat['event_list'][i,0][0]
@@ -70,7 +77,7 @@ for i in range(len(mat['event_list'])):
         cv2.imshow('test', img)
         print(img.shape)
         key = cv2.waitKey()
-        if key == 27:
+        if key == 27: # press Esc to quit
             quit()
         print('next_loop')
 
