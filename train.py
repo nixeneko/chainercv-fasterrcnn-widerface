@@ -26,8 +26,9 @@ from chainercv import transforms
 
 from wider_face_dataset import WIDERFACEDataset
 
-WIDER_TRAIN_DIR = "WIDER_train"
-WIDER_TRAIN_ANNOTATION_MAT = "wider_face_split/wider_face_train.mat"
+# dataset paths
+WIDER_TRAIN_DIR = 'WIDER_train'
+WIDER_TRAIN_ANNOTATION_MAT = 'wider_face_split/wider_face_train.mat'
 WIDER_VAL_DIR = 'WIDER_val'
 WIDER_VAL_ANNOTATION_MAT = 'wider_face_split/wider_face_val.mat'
 
