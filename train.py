@@ -26,6 +26,11 @@ from chainercv import transforms
 
 from wider_face_dataset import WIDERFACEDataset
 
+WIDER_TRAIN_DIR = "WIDER_train"
+WIDER_TRAIN_ANNOTATION_MAT = "wider_face_split/wider_face_train.mat"
+WIDER_VAL_DIR = 'WIDER_val'
+WIDER_VAL_ANNOTATION_MAT = 'wider_face_split/wider_face_val.mat'
+BLACKLIST_FILE = 'blacklist.txt'
 
 faster_rcnn = FasterRCNNVGG16(n_fg_class=1,
                               pretrained_model='imagenet')
@@ -56,29 +61,38 @@ def main():
     parser.add_argument('--seed', '-s', type=int, default=0)
     parser.add_argument('--step_size', '-ss', type=int, default=50000)
     parser.add_argument('--iteration', '-i', type=int, default=70000)
+    parser.add_argument('--train_data_dir', '-t', default=WIDER_TRAIN_DIR,
+                        help='Train dataset (WIDER_train)')
+    parser.add_argument('--train_annotation', '-ta', default=WIDER_TRAIN_ANNOTATION_MAT,
+                        help='Output directory')
+    parser.add_argument('--val_data_dir', '-v', default=WIDER_VAL_DIR,
+                        help='Output directory')
+    parser.add_argument('--val_annotation', '-va', default=WIDER_VAL_ANNOTATION_MAT,
+                        help='Output directory')
     args = parser.parse_args()
 
     np.random.seed(args.seed)
 
+    # for logging pocessed files
     logger = logging.getLogger('logger')
     logger.setLevel(logging.DEBUG)
     handler = logging.FileHandler(filename='filelog.log')
     handler.setLevel(logging.DEBUG)
     logger.addHandler(handler)
     
-    donelist = []
-    with open('blacklist.txt', 'r') as f:
+    blacklist = []
+    with open(BLACKLIST_FILE, 'r') as f:
         for line in f:
             l = line.strip()
             if l:
-                donelist.append(line.strip())
-    #print(donelist)
+                blacklist.append(line.strip())
+    
     # train_data = VOCDetectionDataset(split='trainval', year='2007')
     # test_data = VOCDetectionDataset(split='test', year='2007',
                                     # use_difficult=True, return_difficult=True)
-    train_data = WIDERFACEDataset('WIDER_train', 'wider_face_split/wider_face_train.mat', 
-        logger=logger, exclude_file_list=donelist)
-    test_data = WIDERFACEDataset('WIDER_val', 'wider_face_split/wider_face_val.mat')
+    train_data = WIDERFACEDataset(args.train_data_dir, args.train_annotation, 
+        logger=logger, exclude_file_list=blacklist)
+    test_data = WIDERFACEDataset(args.val_data_dir, args.val_annotation)
     # faster_rcnn = FasterRCNNVGG16(n_fg_class=len(voc_detection_label_names),
                                   # pretrained_model='imagenet')
     faster_rcnn.use_preset('evaluate')
