@@ -41,7 +41,7 @@ class WIDERFACEDataset(chainer.dataset.DatasetMixin):
                 file = mat['file_list'][i,0][j,0][0]
                 filename = "{}.jpg".format(file)
                 filepath = os.path.join(data_dir, 'images', event, filename)
-                if exclude_file_list != None and filepath in exclude_file_list:
+                if exclude_file_list != None and filename in exclude_file_list:
                     continue
                 # bounding boxes and labels of the picture file
                 bboxs = mat['face_bbx_list'][i,0][j,0]
@@ -58,7 +58,7 @@ class WIDERFACEDataset(chainer.dataset.DatasetMixin):
                 
                 self.ids.append(filepath)
                 self.bboxs[filepath] = swapped_bbxs.astype(np.float32)
-                self.labels[filepath] = np.zeros(len(bboxs), dtype=np.int32) #dummy
+                self.labels[filepath] = np.zeros(len(bboxs), dtype=np.int32) #dummy, always 0
                 self.difficult[filepath] = invalid_labels
 
     def __len__(self):
