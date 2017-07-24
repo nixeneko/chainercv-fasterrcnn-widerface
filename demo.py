@@ -1,22 +1,30 @@
 import argparse
 import matplotlib.pyplot as plot
 
+import os
 import chainer
 
 from chainercv.links import FasterRCNNVGG16
 from chainercv import utils
 from chainercv.visualizations import vis_bbox
 
+import download_model
+TRAINED_MODEL_DEFAULT = 'trained_model/snapshot_model.npz'
+MODEL_URL = 'http://nixeneko.2-d.jp/hatenablog/20170724_facedetection_model/snapshot_model.npz'
 
 def main():
     chainer.config.train = False
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--gpu', type=int, default=-1)
-    parser.add_argument('--pretrained_model', default='trained_model/snapshot_model.npz')
+    parser.add_argument('--pretrained_model', default=TRAINED_MODEL_DEFAULT)
     parser.add_argument('image')
     args = parser.parse_args()
 
+    if args.pretrained_model == TRAINED_MODEL_DEFAULT and \
+       not os.path.exists(TRAINED_MODEL_DEFAULT):
+        download_model.download_model(MODEL_URL, TRAINED_MODEL_DEFAULT)
+        
     model = FasterRCNNVGG16(
         n_fg_class=1,
         pretrained_model=args.pretrained_model)

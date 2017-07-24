@@ -2,7 +2,7 @@ from __future__ import division
 
 import argparse
 import numpy as np
-import sys
+import sys, os
 import time
 
 import chainer
@@ -20,6 +20,11 @@ from  wider_face_dataset import WIDERFACEDataset
 # validation dataset path
 WIDER_VAL_DIR = 'WIDER_val'
 WIDER_VAL_ANNOTATION_MAT = 'wider_face_split/wider_face_val.mat'
+
+# for model downloader
+import download_model
+TRAINED_MODEL_DEFAULT = 'trained_model/snapshot_model.npz'
+MODEL_URL = 'http://nixeneko.2-d.jp/hatenablog/20170724_facedetection_model/snapshot_model.npz'
 
 class ProgressHook(object):
 
@@ -39,11 +44,15 @@ class ProgressHook(object):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--pretrained_model', default='trained_model/snapshot_model.npz')
+    parser.add_argument('--pretrained_model', default=TRAINED_MODEL_DEFAULT)
     parser.add_argument('--gpu', type=int, default=-1)
     parser.add_argument('--batchsize', type=int, default=32)
     args = parser.parse_args()
-
+    
+    if args.pretrained_model == TRAINED_MODEL_DEFAULT and \
+       not os.path.exists(TRAINED_MODEL_DEFAULT):
+        download_model.download_model(MODEL_URL, TRAINED_MODEL_DEFAULT)
+    
     model = FasterRCNNVGG16(
         n_fg_class=1,
         pretrained_model=args.pretrained_model)

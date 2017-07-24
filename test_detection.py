@@ -20,6 +20,9 @@ mat = scipy.io.loadmat(WIDER_VAL_ANNOTATION_MAT)
 
 #dict_keys(['pose_label_list', 'event_list', 'file_list', '__header__', '__version__', 'invalid_label_list', 'illumination_label_list', '__globals__', 'occlusion_label_list', 'face_bbx_list', 'blur_label_list', 'expression_label_list'])
 
+if not os.path.exists(MODELFILE):
+    download_model.download_model('http://nixeneko.2-d.jp/hatenablog/20170724_facedetection_model/snapshot_model.npz', MODELFILE)
+
 model = FasterRCNNVGG16(
     n_fg_class=1,
     pretrained_model=MODELFILE)
