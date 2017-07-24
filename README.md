@@ -19,8 +19,12 @@ Library version:
 - CuPy 1.0.0.1
 - ChainerCV 0.5.1
 
+A pre-trained model is excluded from this repositiory. It will be downloaded automatically when you execute `demo.py`. 
+Otherwise, download it manually from the next link and put it on `trained_model/snapshot_model.npz`.
+- http://nixeneko.2-d.jp/hatenablog/20170724_facedetection_model/snapshot_model.npz
+
 ### Demo
-If a path to pretorained model is not given, `tained_moded/snapshot_model.npz` is used.
+If a path to pretorained model is not given, `tained_model/snapshot_model.npz` is used.
 Since the pretrained model has large file size (484 MB), it is excluded from this repository. It will be downloaded automatically when  `demo.py` is executed.
 
     python demo.py [--gpu <gpu>] [--pretrained_model <model_path>] <image>.jpg
