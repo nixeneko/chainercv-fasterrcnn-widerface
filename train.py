@@ -18,7 +18,7 @@ from chainer.training.triggers import ManualScheduleTrigger
 
 from chainercv.datasets import TransformDataset
 #from chainercv.datasets import voc_detection_label_names
-from chainercv.datasets import VOCDetectionDataset
+#from chainercv.datasets import VOCDetectionDataset
 from chainercv.extensions import DetectionVOCEvaluator
 from chainercv.links import FasterRCNNVGG16
 from chainercv.links.model.faster_rcnn import FasterRCNNTrainChain
@@ -159,8 +159,7 @@ def main():
             test_iter, model.faster_rcnn, use_07_metric=True,
             label_names=('face',)),
         trigger=ManualScheduleTrigger(
-            [args.step_size, args.iteration], 'iteration'),
-        invoke_before_training=False)
+            [args.step_size, args.iteration], 'iteration'))
 
     trainer.extend(extensions.dump_graph('main/loss'))
 
